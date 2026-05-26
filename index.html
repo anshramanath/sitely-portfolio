@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sitely</title>
+  <link rel="icon" type="image/png" href="assets/globe.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,700;1,9..144,900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #15110d;
+      --cream:    #f1ead9;
+      --cream-2:  #ece2cb;
+      --ink:      #1b1712;
+      --coral:    #d8593c;
+      --olive:    #3b4c2d;
+      --olive-lt: #6e814f;
+      --terra:    #b15a3a;
+      --plum:     #3d2436;
+      --butter:   #e8c878;
+      --mauve:    #87596a;
+      --teal:     #2f5556;
+      --dim:      rgba(241,234,217,0.42);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body { background: var(--bg); }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      min-height: 100vh;
+      padding: 16px;
+      color: var(--cream);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ───── HEADER ───── */
+    header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 4px 8px 18px;
+    }
+
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      font-size: 1.6rem;
+      letter-spacing: -0.035em;
+      color: var(--cream);
+      font-variation-settings: "opsz" 144;
+    }
+    .logo em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--coral);
+    }
+
+    .tagline {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--dim);
+      letter-spacing: 0.02em;
+    }
+    .tagline::before { content: "↳ "; color: var(--coral); }
+
+    /* ───── BENTO GRID ───── */
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: 52px;
+      gap: 12px;
+      grid-auto-flow: row dense;
+    }
+
+    /* ───── INTRO CARD ───── */
+    .intro {
+      grid-area: 1 / 1 / 8 / 6;
+      background: var(--cream);
+      color: var(--ink);
+      border-radius: 20px;
+      padding: 30px 32px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.55);
+    }
+
+    .intro-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      color: var(--coral);
+      text-transform: lowercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .intro-eyebrow::before {
+      content: "";
+      width: 7px; height: 7px;
+      background: var(--coral);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .intro h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      font-size: clamp(2.1rem, 3.8vw, 3.2rem);
+      line-height: 0.94;
+      letter-spacing: -0.045em;
+      color: var(--ink);
+      font-variation-settings: "opsz" 144;
+      margin-top: 14px;
+      text-wrap: balance;
+    }
+    .intro h1 em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--coral);
+    }
+    .intro h1 .ul {
+      position: relative;
+      display: inline-block;
+    }
+    .intro h1 .ul::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0.06em;
+      height: 0.13em;
+      background: var(--coral);
+      opacity: 0.85;
+    }
+
+    .intro-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+    }
+    .intro-foot p {
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: rgba(27,23,18,0.7);
+      max-width: 28ch;
+      text-wrap: pretty;
+    }
+    .intro-arrow {
+      font-family: 'Fraunces', serif;
+      font-size: 2.4rem;
+      font-style: italic;
+      color: var(--coral);
+      line-height: 0.8;
+      flex-shrink: 0;
+    }
+
+    /* ───── CARD BASE ───── */
+    .bc {
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      text-decoration: none;
+      display: block;
+      cursor: pointer;
+      transition: transform 0.35s cubic-bezier(.2,.7,.2,1);
+      isolation: isolate;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+    }
+    .bc:hover { transform: translateY(-3px); }
+    .bc.no-link { cursor: default; }
+
+    /* size classes are fallbacks; tiles ship explicit grid-area for bento rhythm */
+    .bc.large  { grid-column: span 7; grid-row: span 7; }
+    .bc.medium { grid-column: span 5; grid-row: span 4; }
+    .bc.wide   { grid-column: span 7; grid-row: span 4; }
+    .bc.band   { grid-column: span 7; grid-row: span 3; }
+    .bc.tall   { grid-column: span 5; grid-row: span 6; }
+    .bc.small  { grid-column: span 5; grid-row: span 3; }
+    .bc.strip  { grid-column: 1 / -1;   grid-row: span 3; }  /* full-width footer strip */
+
+    /* tighten name on shorter tiles so the long business names breathe */
+    .bc.small .bc-block .ph-name,
+    .bc.band  .bc-block .ph-name { font-size: clamp(1.2rem, 2vw, 1.7rem); }
+    .bc.band  .bc-block { padding: 18px 22px; }
+
+    /* horizontal letterhead layout for full-width strip tiles — no special override; uses corners */
+
+    /* ───── PHOTO CARDS ───── */
+    .bc-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .bc-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to top, rgba(15,10,6,0.78) 0%, rgba(15,10,6,0.22) 42%, transparent 70%),
+        linear-gradient(to bottom, rgba(15,10,6,0.35) 0%, transparent 30%);
+    }
+
+    /* ───── PLACEHOLDER CARDS (color-block typographic) ───── */
+    .bc-block {
+      position: absolute;
+      inset: 0;
+      padding: 22px 24px;
+    }
+    .bc-block .corner {
+      position: absolute;
+      max-width: calc(100% - 48px);
+    }
+    .bc-block .corner.tl { top: 22px;    left: 24px; }
+    .bc-block .corner.tr { top: 22px;    right: 24px; }
+    .bc-block .corner.bl { bottom: 22px; left: 24px; }
+    .bc-block .corner.br { bottom: 22px; right: 24px; }
+    .bc-block.olive   { background: var(--olive);  color: var(--cream); }
+    .bc-block.coral   { background: var(--coral);  color: var(--cream); }
+    .bc-block.terra   { background: var(--terra);  color: var(--cream); }
+    .bc-block.plum    { background: var(--plum);   color: var(--cream); }
+    .bc-block.butter  { background: var(--butter); color: var(--ink); }
+    .bc-block.mauve   { background: var(--mauve);  color: var(--cream); }
+    .bc-block.teal    { background: var(--teal);   color: var(--cream); }
+    .bc-block.cream   { background: var(--cream-2); color: var(--ink); }
+
+    .bc-block .ph-name {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      font-variation-settings: "opsz" 144;
+      text-wrap: balance;
+    }
+    .bc-block .ph-name em {
+      font-style: italic;
+      font-weight: 400;
+    }
+    .bc-block .ph-mark {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.66rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+    .bc-block .ph-mark em { font-style: normal; }
+    .bc-block .ph-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    /* striped placeholder fallback for "image missing" feel on .bc-stripe variant */
+    .bc-stripe {
+      position: absolute;
+      inset: 0;
+      background-color: #2a241c;
+      background-image: repeating-linear-gradient(
+        45deg,
+        rgba(241,234,217,0.04) 0 14px,
+        transparent 14px 28px
+      );
+    }
+
+    /* ───── CARD CONTENT (overlay on photo) ───── */
+    .bc-content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 20px 22px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      color: #fff;
+    }
+    .bc-name {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      line-height: 1.0;
+      letter-spacing: -0.025em;
+      font-variation-settings: "opsz" 144;
+    }
+    .bc-name em { font-style: italic; font-weight: 400; }
+    .bc-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.78);
+      margin-top: 8px;
+      letter-spacing: 0.02em;
+    }
+    .bc-sub .dot { opacity: 0.45; margin: 0 6px; }
+
+    /* paid/free typographic mark */
+    .bc-mark {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      opacity: 0.85;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bc-mark::before {
+      content: "";
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .bc-mark.free::before { background: transparent; box-shadow: inset 0 0 0 1px currentColor; }
+
+    /* large card gets bigger title */
+    .bc.large .bc-name { font-size: 2rem; }
+    .bc.large .bc-content { padding: 26px 28px; }
+
+    /* tiny external link cue, top-right — removed per design */
+
+    /* ───── FOOTER ───── */
+    footer {
+      margin-top: 20px;
+      padding: 14px 8px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(241,234,217,0.08);
+    }
+    .footer-logo {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      color: rgba(241,234,217,0.55);
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+    }
+    .footer-logo em { color: var(--coral); font-style: italic; font-weight: 400; }
+    .footer-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--dim);
+      letter-spacing: 0.04em;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    header { animation: fadeUp 0.5s ease both; }
+    .bento { animation: fadeUp 0.55s 0.08s ease both; }
+    footer { animation: fadeUp 0.5s 0.2s ease both; }
+
+    /* ───── RESPONSIVE ───── */
+    @media (max-width: 700px) {
+      body { padding: 10px; }
+      .bento {
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: auto;
+        gap: 8px;
+      }
+      .intro,
+      .bc {
+        grid-area: auto / span 2 !important;
+        height: 230px;
+      }
+      .intro { height: auto; min-height: 220px; padding: 22px; }
+      .intro h1 { font-size: 1.9rem; }
+      .bc.large { height: 280px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Sitely<em>.</em></div>
+    <div class="tagline">websites for local businesses · est. 2026</div>
+  </header>
+
+  <main class="bento" id="bento-grid">
+
+    <!-- Intro card (always first, 5×5) -->
+    <section class="intro">
+      <div class="intro-eyebrow">selected works &nbsp;·&nbsp; 2026</div>
+      <h1>Small <em>shops.</em><br>Real <span class="ul">sites</span>.<br>No fuss.</h1>
+      <div class="intro-foot">
+        <p>We build fast, friendly websites for the corner shop, the new café, the family trade.</p>
+        <div class="intro-arrow">→</div>
+      </div>
+    </section>
+
+    <!-- Sites injected here by JS -->
+    <div id="sites-container"></div>
+
+  </main>
+
+  <footer>
+    <div class="footer-logo">Sitely<em>.</em></div>
+    <div class="footer-text">© 2026 · made by hand, in plain HTML</div>
+  </footer>
+
+  <script>
+    // ============================================
+    // SITES — add new entries here.
+    // sizes:    "large" | "medium" | "wide" | "tall" | "small"
+    // First site is always "large"; rest auto-cycle unless overridden.
+    // screenshot: filename of hero image, or "" for typographic placeholder tile
+    // placeholderColor: olive | coral | terra | plum | butter | mauve | teal | cream
+    // paid: true → client work, false → portfolio piece
+    // ============================================
+    // grid-area: row-start / col-start / row-end / col-end  (12-col grid)
+    const sites = [
+      { name: "Meetcha",        type: "Bubble Tea Café",  city: "Plano, TX",      url: "https://anshramanath.github.io/meetcha-website/",
+        screenshot: "assets/images/meetcha.jpg",                 paid: false, cta: "sip",
+        size: "large",  area: "1 / 6 / 8 / 13" },
+
+      { name: "Beto's Tacos",   type: "Taquería",         city: "Austin, TX",     url: "#",
+        screenshot: "", placeholderColor: "terra",      paid: true,  cta: "order",   wip: "still seasoning", corners: ["bl", "tl"],
+        size: "wide",   area: "8 / 1 / 13 / 8" },
+
+      { name: "Foxglove",       type: "Florist & Garden", city: "Portland, OR",   url: "#",
+        screenshot: "", placeholderColor: "olive",      paid: true,  cta: "wander",  wip: "still planting", corners: ["tr", "br"],
+        size: "medium", area: "8 / 8 / 12 / 13" },
+
+      { name: "Hadley & Co.",   type: "Used Books",       city: "Providence, RI", url: "#",
+        screenshot: "", placeholderColor: "teal",       paid: false, cta: "browse",  wip: "still shelving", corners: ["tr", "tl"],
+        size: "medium", area: "12 / 8 / 16 / 13" },
+
+      { name: "Ridge Cycle Co.",type: "Bike Workshop",    city: "Asheville, NC",  url: "#",
+        screenshot: "", placeholderColor: "plum",       paid: true,  cta: "roll",    wip: "still tuning", corners: ["br", "bl"],
+        size: "band",   area: "13 / 1 / 16 / 8" },
+
+      { name: "Linden St.",     type: "Bakery",           city: "Oakland, CA",    url: "#",
+        screenshot: "", placeholderColor: "butter",     paid: true,  cta: "taste",   wip: "still rising", corners: ["bl", "br"],
+        size: "tall",   area: "16 / 1 / 22 / 9" },
+
+      { name: "Pasta Notte",    type: "Trattoria",        city: "Chicago, IL",    url: "#",
+        screenshot: "", placeholderColor: "mauve",      paid: true,  cta: "dig in",  wip: "still simmering", corners: ["tl", "tr"],
+        size: "tall",   area: "16 / 9 / 22 / 13" },
+
+      { name: "Brick Lane",     type: "Barber Shop",      city: "Brooklyn, NY",   url: "#",
+        screenshot: "", placeholderColor: "cream",      paid: false, cta: "step in", wip: "still trimming", corners: ["tl", "br"],
+        size: "strip", area: "22 / 1 / 25 / 13" }
+    ];
+
+    const container = document.getElementById('sites-container');
+
+    const markup = sites.map((site, i) => {
+      const size = site.size || "medium";
+      const areaStyle = site.area ? ` style="grid-area:${site.area}"` : "";
+      const ctaLabel = site.cta || "visit";
+      const paidClass = site.paid ? "paid" : "free";
+      const hasLink = !!site.screenshot && site.url && site.url !== "#";
+
+      let body;
+      if (site.screenshot) {
+        body = `
+          <img class="bc-img" src="${site.screenshot}" alt="${site.name}" loading="lazy" />
+          <div class="bc-overlay"></div>
+          <div class="bc-content">
+            <div>
+              <div class="bc-name">${site.name}</div>
+              <div class="bc-sub">${site.type}<span class="dot">●</span>${site.city}</div>
+            </div>
+            <span class="bc-mark ${paidClass}">${ctaLabel}</span>
+          </div>`;
+      } else {
+        const color = site.placeholderColor || "olive";
+        const wip = site.wip || "still cooking";
+        const [wipPos, ctaPos] = site.corners || ["tl", "br"];
+        body = `
+          <div class="bc-block ${color}">
+            <span class="corner ${wipPos} ph-mark">${wip}</span>
+            <span class="corner ${ctaPos} bc-mark ${paidClass}">${ctaLabel}</span>
+          </div>`;
+      }
+
+      const cls = `bc ${size}${hasLink ? "" : " no-link"}`;
+      const label = `${site.name} — ${site.type} in ${site.city}`;
+      return hasLink
+        ? `<a class="${cls}" href="${site.url}" target="_blank" rel="noopener" aria-label="${label}"${areaStyle}>${body}</a>`
+        : `<div class="${cls}" aria-label="${label}"${areaStyle}>${body}</div>`;
+    }).join('');
+
+    container.outerHTML = markup;
+  </script>
+
+</body>
+</html>
