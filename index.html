@@ -420,8 +420,8 @@
         screenshot: "assets/images/meetcha.jpg",                 paid: false, cta: "sip",
         size: "large",  area: "1 / 6 / 8 / 13" },
 
-      { name: "Beto's Tacos",   type: "Taquería",         city: "Austin, TX",     url: "#",
-        screenshot: "", placeholderColor: "terra",      paid: true,  cta: "order",   wip: "still seasoning", corners: ["bl", "tl"],
+      { name: "Miao",            type: "AYCD Boba",         city: "Carrollton, TX", url: "https://anshramanath.github.io/miao-website/",
+        screenshot: "assets/images/miao.png",                        paid: false, cta: "order", ctaCorner: "tl", imgPosition: "center 37.5%",
         size: "wide",   area: "8 / 1 / 13 / 8" },
 
       { name: "Foxglove",       type: "Florist & Garden", city: "Portland, OR",   url: "#",
@@ -459,16 +459,22 @@
       const hasLink = !!site.screenshot && site.url && site.url !== "#";
 
       let body;
+      const cornerStyle = { tl:'top:22px;left:24px', tr:'top:22px;right:24px', bl:'bottom:22px;left:24px', br:'bottom:22px;right:24px' };
       if (site.screenshot) {
+        const markCorner = site.ctaCorner
+          ? `<span class="bc-mark ${paidClass}" style="position:absolute;color:#fff;${cornerStyle[site.ctaCorner]}">${ctaLabel}</span>`
+          : '';
+        const markInline = site.ctaCorner ? '' : `<span class="bc-mark ${paidClass}">${ctaLabel}</span>`;
         body = `
-          <img class="bc-img" src="${site.screenshot}" alt="${site.name}" loading="lazy" />
+          <img class="bc-img" src="${site.screenshot}" alt="${site.name}" loading="lazy" style="${site.imgPosition ? `object-position:${site.imgPosition}` : ''}" />
           <div class="bc-overlay"></div>
+          ${markCorner}
           <div class="bc-content">
             <div>
               <div class="bc-name">${site.name}</div>
               <div class="bc-sub">${site.type}<span class="dot">●</span>${site.city}</div>
             </div>
-            <span class="bc-mark ${paidClass}">${ctaLabel}</span>
+            ${markInline}
           </div>`;
       } else {
         const color = site.placeholderColor || "olive";
