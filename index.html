@@ -416,16 +416,16 @@
     // ============================================
     // grid-area: row-start / col-start / row-end / col-end  (12-col grid)
     const sites = [
-      { name: "Meetcha",        type: "Bubble Tea Café",  city: "Plano, TX",      url: "https://anshramanath.github.io/meetcha-website/",
+      { name: "Meetcha",        type: "Bubble Tea Café",  city: "Plano, TX",      url: "https://sitely2web.github.io/meetcha/",
         screenshot: "assets/images/meetcha.jpg",                 paid: false, cta: "sip",
         size: "large",  area: "1 / 6 / 8 / 13" },
 
-      { name: "Miao",            type: "AYCD Boba",         city: "Carrollton, TX", url: "https://anshramanath.github.io/miao-website/",
+      { name: "Miao",            type: "AYCD Boba",         city: "Carrollton, TX", url: "https://sitely2web.github.io/miao/",
         screenshot: "assets/images/miao.png",                        paid: false, cta: "order", ctaCorner: "tl", imgPosition: "center 37.5%",
         size: "wide",   area: "8 / 1 / 13 / 8" },
 
-      { name: "Foxglove",       type: "Florist & Garden", city: "Portland, OR",   url: "#",
-        screenshot: "", placeholderColor: "olive",      paid: true,  cta: "wander",  wip: "still planting", corners: ["tr", "br"],
+      { name: "See U Morning",  type: "Chinese Breakfast",      city: "Frisco, TX",     url: "https://sitely2web.github.io/see-u-morning/",
+        screenshot: "assets/images/see-u-morning.jpg",               paid: false, cta: "rise", nameCorner: "tr", ctaCorner: "br",
         size: "medium", area: "8 / 8 / 12 / 13" },
 
       { name: "Hadley & Co.",   type: "Used Books",       city: "Providence, RI", url: "#",
@@ -465,15 +465,23 @@
           ? `<span class="bc-mark ${paidClass}" style="position:absolute;color:#fff;${cornerStyle[site.ctaCorner]}">${ctaLabel}</span>`
           : '';
         const markInline = site.ctaCorner ? '' : `<span class="bc-mark ${paidClass}">${ctaLabel}</span>`;
+        const labelCorner = site.nameCorner
+          ? `<div style="position:absolute;${cornerStyle[site.nameCorner]};text-align:right;color:#fff;">
+               <div class="bc-name">${site.name}</div>
+               <div class="bc-sub">${site.type}<span class="dot">●</span>${site.city}</div>
+             </div>`
+          : '';
+        const labelInContent = site.nameCorner ? '' : `<div>
+              <div class="bc-name">${site.name}</div>
+              <div class="bc-sub">${site.type}<span class="dot">●</span>${site.city}</div>
+            </div>`;
         body = `
           <img class="bc-img" src="${site.screenshot}" alt="${site.name}" loading="lazy" style="${site.imgPosition ? `object-position:${site.imgPosition}` : ''}" />
           <div class="bc-overlay"></div>
           ${markCorner}
+          ${labelCorner}
           <div class="bc-content">
-            <div>
-              <div class="bc-name">${site.name}</div>
-              <div class="bc-sub">${site.type}<span class="dot">●</span>${site.city}</div>
-            </div>
+            ${labelInContent}
             ${markInline}
           </div>`;
       } else {
